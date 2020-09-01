@@ -5,6 +5,10 @@ public class Duke {
     public static int numOfTasks = 0;
     public static Task[] tasks = new Task[10];
 
+    public static void exitDuke (){
+        shouldExit = true;
+        System.out.println("Bye. Hope to see you again soon!");
+    }
     // Print the list of tasks entered
     public static void printList (){
         System.out.println("Here is your List of Tasks: ");
@@ -14,11 +18,24 @@ public class Duke {
         System.out.println("Now you have " + numOfTasks + " Tasks in the list");
     }
 
+    // Mark a specific task in the list as done
+    public static void markTaskInListAsDone(String command){
+        int dividerPosition = command.indexOf(" ");
+        int taskNumCompleted = Integer.parseInt(command.substring(dividerPosition).trim());
+
+        if (taskNumCompleted > numOfTasks) {
+            System.out.println("This is not a valid task\nPlease enter a valid task number");
+        }
+
+        System.out.println("Good Job completing your task! I have marked it as done.");
+        tasks[taskNumCompleted - 1].markTaskDone();
+        System.out.println(tasks[taskNumCompleted - 1]);
+    }
+
     // Determine the type of task added and add to the existing list of tasks
     public static void addTask (String command){
         int descriptionPosition = command.indexOf(" ");
         if (command.contains("todo")){
-            //int descriptionPosition = command.indexOf(" ");
             tasks[numOfTasks] = new ToDo(command.substring(descriptionPosition).trim());
         }
         else if (command.contains ("deadline")){
@@ -28,7 +45,6 @@ public class Duke {
             tasks[numOfTasks] = new Deadline(description, by);
         }
         else if (command.contains ("event")) {
-           // int descriptionPosition = command.indexOf(" ");
             int atPosition = command.indexOf("/");
             String description = command.substring(descriptionPosition, atPosition).trim();
             String at = command.substring(atPosition + 3).trim(); // plus 3 to get rid of the /by
@@ -44,23 +60,13 @@ public class Duke {
     // Determine the command sent and execute accordingly
     public static void executeCommand (String command){
         if (command.equals("bye")){
-            shouldExit = true;
-            System.out.println("Bye. Hope to see you again soon!");
+            exitDuke();
         }
         else if (command.equals("list")) {
             printList();
         }
         else if (command.contains("done")){
-            int dividerPosition = command.indexOf(" ");
-            int taskNumCompleted = Integer.parseInt(command.substring(dividerPosition).trim());
-
-            if (taskNumCompleted > numOfTasks) {
-                System.out.println("This is not a valid task\nPlease enter a valid task number");
-            }
-
-            System.out.println("Good Job completing your task! I have marked it as done.");
-            tasks[taskNumCompleted - 1].markTaskDone();
-            tasks[taskNumCompleted - 1].printTaskDetails();
+            markTaskInListAsDone(command);
         }
         else {
             addTask(command);
