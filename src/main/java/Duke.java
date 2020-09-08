@@ -36,36 +36,36 @@ public class Duke {
     }
 
     // Add a ToDo Task
-    public static void addTodo (String task){
+    public static void addTodo  (String task) throws DukeException{
         if (task.equals("")){
-            throw new ArrayIndexOutOfBoundsException();
+            throw new DukeException("no description");
         }
         tasks[numOfTasks] = new ToDo(task);
         System.out.println("There you go I've added it to the list\n" + tasks[numOfTasks]);
         numOfTasks ++;
     }
 
-    public static void addDeadline (String task){
+    public static void addDeadline (String task) throws DukeException{
         //index 0 refers to the description of the task and index 1 refers to the deadline
         String[] taskDetails = task.split("/by", 2);
         if (taskDetails[0].isEmpty()){
-            throw new ArrayIndexOutOfBoundsException("task empty");
+            throw new DukeException("no description");
         }
         if (!task.contains("/by")){
-            throw new MissingFormatArgumentException("No /by");
+            throw new DukeException("No /by");
         }
         tasks[numOfTasks] = new Deadline(taskDetails[0].trim(), taskDetails[1].trim());
         System.out.println("There you go I've added it to the list\n" + tasks[numOfTasks]);
         numOfTasks ++;
     }
-    public static void addEvent (String task){
+    public static void addEvent (String task) throws DukeException{
         //index 0 refers to the description of the task and index 1 refers to the deadline
         String[] taskDetails = task.split("/at", 2);
         if (taskDetails[0].isEmpty()){
-            throw new ArrayIndexOutOfBoundsException("task empty");
+            throw new DukeException("no description");
         }
         if (!task.contains("/at")){
-            throw new MissingFormatArgumentException("No /at");
+            throw new DukeException("No /at");
         }
         tasks[numOfTasks] = new Event(taskDetails[0].trim(), taskDetails[1].trim());
         System.out.println("There you go I've added it to the list\n" + tasks[numOfTasks]);
@@ -98,6 +98,8 @@ public class Duke {
                 addTodo(userInput[1]);
             } catch (ArrayIndexOutOfBoundsException e){
                 System.out.println ("Oopsies, seems like you did not enter a description for the task. A todo needs a description!");
+            } catch (DukeException e){
+                System.out.println ("Oopsies, seems like you left the description blank. A todo needs a description!");
             }
             break;
         case "deadline":
@@ -105,8 +107,8 @@ public class Duke {
             addDeadline(userInput[1]);
             } catch (ArrayIndexOutOfBoundsException e) {
                 System.out.println("Oopsies, seems like you did not enter a description for the task. A deadline needs a description!");
-            } catch (MissingFormatArgumentException e){
-                System.out.println("A deadline requires '/by' entered after the task description");
+            } catch (DukeException e){
+                System.out.println("A deadline requires the time it is due");
             }
             break;
         case "event":
@@ -114,8 +116,8 @@ public class Duke {
                 addEvent(userInput[1]);
             } catch (ArrayIndexOutOfBoundsException e) {
                 System.out.println("Oopsies, seems like you did not enter a description for the task. An event needs a description!");
-            } catch (MissingFormatArgumentException e){
-                System.out.println("An event requires '/at' entered after the task description to specify the time of the event");
+            } catch (DukeException e){
+                System.out.println("An event requires the time of the event");
             }
             break;
         // If it is none of the above commands, Tell the user to enter a valid command
