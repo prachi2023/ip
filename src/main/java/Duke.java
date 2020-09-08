@@ -20,20 +20,20 @@ public class Duke {
 
     // Mark a specific task in the list as done
     public static void markTaskInListAsDone(String command){
-        int dividerPosition = command.indexOf(" ");
-        int taskNumCompleted = Integer.parseInt(command.substring(dividerPosition).trim());
+            int dividerPosition = command.indexOf(" ");
+            int taskNumCompleted = Integer.parseInt(command.substring(dividerPosition).trim());
 
-        if (taskNumCompleted > numOfTasks) {
-            System.out.println("This is not a valid task\nPlease enter a valid task number");
-        }
+            if (taskNumCompleted > numOfTasks) {
+                System.out.println("This is not a valid task\nPlease enter a valid task number");
+            }
+            System.out.println("Good Job completing your task! I have marked it as done.");
+            tasks[taskNumCompleted - 1].markTaskDone();
+            System.out.println(tasks[taskNumCompleted - 1]);
 
-        System.out.println("Good Job completing your task! I have marked it as done.");
-        tasks[taskNumCompleted - 1].markTaskDone();
-        System.out.println(tasks[taskNumCompleted - 1]);
     }
 
     // Determine the type of task added and add to the existing list of tasks
-    public static void addTask (String command){
+    public static void addTask (String command) throws InvalidCommandException {
         int descriptionPosition = command.indexOf(" ");
         if (command.contains("todo")){
             tasks[numOfTasks] = new ToDo(command.substring(descriptionPosition).trim());
@@ -51,7 +51,7 @@ public class Duke {
             tasks[numOfTasks] = new Event(description, at);
         }
         else {
-            tasks[numOfTasks] = new Task(command);
+            throw new InvalidCommandException("Please enter a valid task to add to the list!");
         }
         System.out.println("There you go I've added it to the list\n" + tasks[numOfTasks]);
         numOfTasks ++;
@@ -66,10 +66,18 @@ public class Duke {
             printList();
         }
         else if (command.contains("done")){
-            markTaskInListAsDone(command);
+           try{
+               markTaskInListAsDone(command);
+           } catch (NumberFormatException e){
+               System.out.println("Task index is not a number: please enter a valid integer");
+           }
         }
         else {
-            addTask(command);
+            try {
+                addTask(command);
+            }catch(InvalidCommandException e){
+                System.out.println("Tasks that you can add include: Todo, Deadline and Event");
+            }
         }
     }
     public static void main(String[] args) {
