@@ -1,5 +1,7 @@
+package duke.exception;
+
 public class DukeException extends Exception {
-    DukeException (String error){
+    public DukeException (String error){
         switch (error) {
         case "no description":
             System.out.println("Oops it seems you have left the description empty");

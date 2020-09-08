@@ -1,8 +1,11 @@
 package duke;
 
-import duke.task.Todo;
+import duke.task.Task;
+import duke.task.ToDo;
 import duke.task.Deadline;
 import duke.task.Event;
+import duke.exception.DukeException;
+
 import java.util.Scanner;
 
 public class Duke {
@@ -30,7 +33,7 @@ public class Duke {
             if (taskNumCompleted > numOfTasks) {
                 System.out.println("This is not a valid task\nPlease enter a valid task number");
             }
-            if (tasks[taskNumCompleted - 1].isDone){
+            if (tasks[taskNumCompleted - 1].getIsDone()){
                 System.out.println("This task has already been marked as done!");
             }else{
                 System.out.println("Good Job completing your task! I have marked it as done.");
@@ -39,7 +42,7 @@ public class Duke {
             System.out.println(tasks[taskNumCompleted - 1]);
     }
 
-    // Add a ToDo Task
+    // Add the specific type of tasks to the big list of tasks
     public static void addTodo  (String task) throws DukeException{
         if (task.equals("")){
             throw new DukeException("no description");
@@ -62,6 +65,7 @@ public class Duke {
         System.out.println("There you go I've added it to the list\n" + tasks[numOfTasks]);
         numOfTasks ++;
     }
+
     public static void addEvent (String task) throws DukeException{
         //index 0 refers to the description of the task and index 1 refers to the deadline
         String[] taskDetails = task.split("/at", 2);
