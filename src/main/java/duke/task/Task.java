@@ -11,6 +11,9 @@ public class Task {
     public String toString (){
         return String.format("[%s] %s", getStatusIcon(), description);
     }
+    public String saveFormat(){
+        return String.format("%s:%s", isDone, description);
+    }
     public void markTaskDone() {
         this.isDone = true;
     }
@@ -19,8 +22,5 @@ public class Task {
     }
     public String getStatusIcon(){
         return (isDone ? "\u2713": "\u2718");
-    }
-    public void printTaskDetails (){
-        System.out.println("["+ this.getStatusIcon() + "] " + this.description);
     }
 }
