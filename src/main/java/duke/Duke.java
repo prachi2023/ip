@@ -41,6 +41,18 @@ public class Duke {
             }
             System.out.println(tasks.get(taskIndexCompleted - 1));
     }
+    public static void deleteTask(String index){
+        int taskToDelete = Integer.parseInt(index.trim());
+
+        if (taskToDelete > tasks.size()) {
+            System.out.println("This is not a valid task\nPlease enter a valid task number");
+        }
+        else{
+            System.out.println("Alright deleting task: " + tasks.get(taskToDelete - 1));
+            tasks.remove(taskToDelete - 1);
+            System.out.println("Task has been deleted");
+        }
+    }
 
     // Add the specific type of tasks to the big list of tasks
     public static void addTodo  (String task) throws DukeException{
@@ -94,6 +106,13 @@ public class Duke {
         case "done":
             try {
                 markTaskInListAsDone(userInput[1]);
+            } catch (NumberFormatException e) {
+                System.out.println("Task index is not a number: please enter a valid integer");
+            }
+            break;
+        case "delete":
+            try {
+                deleteTask(userInput[1]);
             } catch (NumberFormatException e) {
                 System.out.println("Task index is not a number: please enter a valid integer");
             }
