@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class Duke {
     public static boolean shouldExit = false;
     public static ArrayList<Task> tasks = new ArrayList<>();
-    public static String path = "data/tasklist.txt";
+    public static String path = "tasklist.txt";
 
 
     public static void main(String[] args) {
