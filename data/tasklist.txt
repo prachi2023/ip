@@ -1,0 +1,6 @@
+T:true:Fix
+T:false:mroe
+D:true:ip:tonight
+E:true:meeting:midnight
+T:false:bloop
+E:false:movie:8pm

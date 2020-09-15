@@ -18,6 +18,28 @@ public class Duke {
     public static ArrayList<Task> tasks = new ArrayList<>();
     public static String path = "data/tasklist.txt";
 
+
+    public static void main(String[] args) {
+        // set up scanner
+        Scanner in = new Scanner (System.in);
+        String command;
+
+        // Introduction
+        System.out.println ("Hello! I'm Duke");
+        System.out.println("What can I do for you?");
+
+        try{
+            setUpFile();
+        }catch (IOException e){
+            System.out.println ("Unable to create a file name 'tasklist'");
+        }
+        while (!shouldExit){
+            command = in.nextLine();
+            executeCommand(command);
+        }
+    }
+
+    /* Saving file and Editing file */
     //Check and create file
     public static void setUpFile() throws IOException{
         File f = new File(path);
@@ -55,7 +77,7 @@ public class Duke {
                 tasks.add(new Task(task[2]));
             }
             if (task[1].equals("true")){
-                tasks.get(tasks.size()).markTaskDone();
+                tasks.get(tasks.size()-1).markTaskDone();
             }
         }
     }
@@ -79,6 +101,7 @@ public class Duke {
         }
     }
 
+    /* Methods to deal with the different commands */
     public static void exitDuke (){
         shouldExit = true;
         System.out.println("Bye. Hope to see you again soon!");
@@ -157,7 +180,7 @@ public class Duke {
         System.out.println("There you go I've added it to the list\n" +  tasks.get(tasks.size()-1));
     }
 
-
+    /* main method do determine command entered by user */
     // Determine the command sent and execute accordingly
     public static void executeCommand (String input){
         // Find the command word entered
@@ -185,8 +208,11 @@ public class Duke {
         case "delete":
             try {
                 deleteTask(userInput[1]);
+                editOrDeleteTaskFile ();
             } catch (NumberFormatException e) {
                 System.out.println("Task index is not a number: please enter a valid integer");
+            } catch (IOException e){
+                System.out.println ("File is unable to be edited");
             }
             break;
         case "todo":
@@ -228,26 +254,6 @@ public class Duke {
         // If it is none of the above commands, Tell the user to enter a valid command
         default:
             System.out.println ("Please enter a valid command! I do not understand '" + userInput[0] + "'");
-        }
-    }
-
-    public static void main(String[] args) {
-        // set up scanner
-        Scanner in = new Scanner (System.in);
-        String command;
-
-        // Introduction
-        System.out.println ("Hello! I'm Duke");
-        System.out.println("What can I do for you?");
-
-        try{
-            setUpFile();
-        }catch (IOException e){
-            System.out.println ("Unable to create a file name 'tasklist'");
-        }
-        while (!shouldExit){
-            command = in.nextLine();
-            executeCommand(command);
         }
     }
 }
