@@ -44,7 +44,10 @@ public class Duke {
     public static void deleteTask(String index){
         int taskToDelete = Integer.parseInt(index.trim());
 
-        if (taskToDelete > tasks.size()) {
+        if (tasks.isEmpty()){
+            System.out.println("There is no task to delete");
+        }
+        else if (taskToDelete > tasks.size()) {
             System.out.println("This is not a valid task\nPlease enter a valid task number");
         }
         else{
