@@ -6,4 +6,7 @@ public class ToDo extends Task{
     public String toString(){
         return String.format ("[T][%s] %s", getStatusIcon(),this.description);
     }
+    public String saveFormat(){
+        return String.format("T:%s:%s", isDone, description);
+    }
 }
