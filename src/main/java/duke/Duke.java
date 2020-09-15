@@ -6,12 +6,12 @@ import duke.task.Deadline;
 import duke.task.Event;
 import duke.exception.DukeException;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Duke {
     public static boolean shouldExit = false;
-    public static int numOfTasks = 0;
-    public static Task[] tasks = new Task[10];
+    public static ArrayList<Task> tasks = new ArrayList<>();
 
     public static void exitDuke (){
         shouldExit = true;
@@ -20,26 +20,38 @@ public class Duke {
     // Print the list of tasks entered
     public static void printList (){
         System.out.println("Here is your List of Tasks: ");
-        for (int i = 0; i < numOfTasks; i++){
-            System.out.println(i+1 + ". " + tasks[i]);
+        for (int i = 0; i < tasks.size(); i++){
+            System.out.println(i+1 + ". " + tasks.get(i));
         }
-        System.out.println("Now you have " + numOfTasks + " Tasks in the list");
+        System.out.println("You have " + tasks.size() + " Tasks in the list");
     }
 
     // Mark a specific task in the list as done
     public static void markTaskInListAsDone(String index){
-            int taskNumCompleted = Integer.parseInt(index.trim());
+            int taskIndexCompleted = Integer.parseInt(index.trim());
 
-            if (taskNumCompleted > numOfTasks) {
+            if (taskIndexCompleted > tasks.size()) {
                 System.out.println("This is not a valid task\nPlease enter a valid task number");
             }
-            if (tasks[taskNumCompleted - 1].getIsDone()){
+            if (tasks.get(taskIndexCompleted - 1).getIsDone()){
                 System.out.println("This task has already been marked as done!");
             }else{
                 System.out.println("Good Job completing your task! I have marked it as done.");
-                tasks[taskNumCompleted - 1].markTaskDone();
+                tasks.get(taskIndexCompleted - 1).markTaskDone();
             }
-            System.out.println(tasks[taskNumCompleted - 1]);
+            System.out.println(tasks.get(taskIndexCompleted - 1));
+    }
+    public static void deleteTask(String index){
+        int taskToDelete = Integer.parseInt(index.trim());
+
+        if (taskToDelete > tasks.size()) {
+            System.out.println("This is not a valid task\nPlease enter a valid task number");
+        }
+        else{
+            System.out.println("Alright deleting task: " + tasks.get(taskToDelete - 1));
+            tasks.remove(taskToDelete - 1);
+            System.out.println("Task has been deleted");
+        }
     }
 
     // Add the specific type of tasks to the big list of tasks
@@ -47,9 +59,8 @@ public class Duke {
         if (task.equals("")){
             throw new DukeException("no description");
         }
-        tasks[numOfTasks] = new ToDo(task);
-        System.out.println("There you go I've added it to the list\n" + tasks[numOfTasks]);
-        numOfTasks ++;
+        tasks.add(new ToDo(task));
+        System.out.println("There you go I've added it to the list\n" + tasks.get(tasks.size()-1));
     }
 
     public static void addDeadline (String task) throws DukeException{
@@ -61,9 +72,8 @@ public class Duke {
         if (!task.contains("/by")){
             throw new DukeException("No /by");
         }
-        tasks[numOfTasks] = new Deadline(taskDetails[0].trim(), taskDetails[1].trim());
-        System.out.println("There you go I've added it to the list\n" + tasks[numOfTasks]);
-        numOfTasks ++;
+        tasks.add(new Deadline(taskDetails[0].trim(), taskDetails[1].trim()));
+        System.out.println("There you go I've added it to the list\n" + tasks.get(tasks.size()-1));
     }
 
     public static void addEvent (String task) throws DukeException{
@@ -75,9 +85,8 @@ public class Duke {
         if (!task.contains("/at")){
             throw new DukeException("No /at");
         }
-        tasks[numOfTasks] = new Event(taskDetails[0].trim(), taskDetails[1].trim());
-        System.out.println("There you go I've added it to the list\n" + tasks[numOfTasks]);
-        numOfTasks ++;
+        tasks.add(new Event(taskDetails[0].trim(), taskDetails[1].trim()));
+        System.out.println("There you go I've added it to the list\n" +  tasks.get(tasks.size()-1));
     }
 
 
@@ -97,6 +106,13 @@ public class Duke {
         case "done":
             try {
                 markTaskInListAsDone(userInput[1]);
+            } catch (NumberFormatException e) {
+                System.out.println("Task index is not a number: please enter a valid integer");
+            }
+            break;
+        case "delete":
+            try {
+                deleteTask(userInput[1]);
             } catch (NumberFormatException e) {
                 System.out.println("Task index is not a number: please enter a valid integer");
             }
