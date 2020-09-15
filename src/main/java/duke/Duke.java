@@ -15,14 +15,21 @@ public class Duke {
     public static boolean shouldExit = false;
     public static int numOfTasks = 0;
     public static Task[] tasks = new Task[10];
+    public static String path = "data/tasklist.txt";
 
-    public static void saveData() throws IOException{
-        File f = new File("data/tasklist.txt");
+    //Check and create file
+    public static void setUpFile() throws IOException{
+        File f = new File(path);
         if (!f.exists()){
             f.createNewFile();
         }
-        FileWriter fw = new FileWriter("tasklist.txt");
-        fw.write("Hello");
+
+    }
+    //Add a task to the file
+    public static void addTaskToFile (int index) throws IOException{
+        FileWriter fw = new FileWriter(path, true);
+        String taskToWrite = tasks[index].toString();
+        fw.write(taskToWrite + System.lineSeparator());
         fw.close();
     }
 
@@ -117,10 +124,13 @@ public class Duke {
         case "todo":
             try{
                 addTodo(userInput[1]);
+                addTaskToFile (numOfTasks - 1);
             } catch (ArrayIndexOutOfBoundsException e){
                 System.out.println ("Oopsies, seems like you did not enter a description for the task. A todo needs a description!");
             } catch (DukeException e){
                 System.out.println ("Oopsies, seems like you left the description blank. A todo needs a description!");
+            } catch (IOException e){
+                System.out.println ("File is unable to be edited");
             }
             break;
         case "deadline":
@@ -155,18 +165,14 @@ public class Duke {
         // Introduction
         System.out.println ("Hello! I'm Duke");
         System.out.println("What can I do for you?");
-
+        try{
+            setUpFile();
+        }catch (IOException e){
+            System.out.println ("Unable to create a file name 'tasklist'");
+        }
         while (!shouldExit){
             command = in.nextLine();
             executeCommand(command);
-            try {
-                saveData();
-            } catch (IOException e){
-                System.out.println ("Enter valid file path");
-                return;
-            }
-
-
         }
     }
 }
