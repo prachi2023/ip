@@ -41,8 +41,6 @@ public class Duke {
             // | is the barrier between the information
             String taskInput = s.nextLine();
             String[] task = taskInput.split(":");
-
-            System.out.println("");
             switch (task[0]) {
             case "T":
                 tasks[numOfTasks] = new ToDo(task[2]);
@@ -56,7 +54,7 @@ public class Duke {
             default:
                 tasks[numOfTasks] = new Task(task[2]);
             }
-            if (task[1] == "true"){
+            if (task[1].equals("true")){
                 tasks[numOfTasks].markTaskDone();
             }
             numOfTasks ++;
@@ -71,8 +69,15 @@ public class Duke {
         fw.close();
     }
     //edit the details of the task in the file
-    public static void editTaskInFile (int index) throws IOException{
-
+    public static void editOrDeleteTaskFile (int index) throws IOException{
+        // Delete all the data in the original file
+        FileWriter fw = new FileWriter(path);
+        fw.write("");
+        fw.close();
+        //Add back all the data excluding deleted data, including the edited data
+        for (int i = 0; i < numOfTasks; i++){
+            addTaskToFile(i);
+        }
     }
 
     public static void exitDuke (){
@@ -94,13 +99,13 @@ public class Duke {
             if (taskNumCompleted > numOfTasks) {
                 System.out.println("This is not a valid task\nPlease enter a valid task number");
             }
-            if (tasks[taskNumCompleted - 1].getIsDone()){
+            if (tasks[taskNumCompleted].getIsDone()){
                 System.out.println("This task has already been marked as done!");
             }else{
                 System.out.println("Good Job completing your task! I have marked it as done.");
-                tasks[taskNumCompleted - 1].markTaskDone();
+                tasks[taskNumCompleted].markTaskDone();
             }
-            System.out.println(tasks[taskNumCompleted - 1]);
+            System.out.println(tasks[taskNumCompleted]);
     }
 
     // Add the specific type of tasks to the big list of tasks
@@ -157,9 +162,9 @@ public class Duke {
             break;
         case "done":
             try {
-                int taskNumCompleted = Integer.parseInt(userInput[1].trim());
+                int taskNumCompleted = Integer.parseInt(userInput[1].trim()) - 1;
                 markTaskInListAsDone(taskNumCompleted);
-                editTaskInFile(taskNumCompleted);
+                editOrDeleteTaskFile(taskNumCompleted);
             } catch (NumberFormatException e) {
                 System.out.println("Task index is not a number: please enter a valid integer");
             } catch (IOException e){
