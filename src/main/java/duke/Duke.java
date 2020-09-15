@@ -6,12 +6,25 @@ import duke.task.Deadline;
 import duke.task.Event;
 import duke.exception.DukeException;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Duke {
     public static boolean shouldExit = false;
     public static int numOfTasks = 0;
     public static Task[] tasks = new Task[10];
+
+    public static void saveData() throws IOException{
+        File f = new File("data/tasklist.txt");
+        if (!f.exists()){
+            f.createNewFile();
+        }
+        FileWriter fw = new FileWriter("tasklist.txt");
+        fw.write("Hello");
+        fw.close();
+    }
 
     public static void exitDuke (){
         shouldExit = true;
@@ -146,6 +159,14 @@ public class Duke {
         while (!shouldExit){
             command = in.nextLine();
             executeCommand(command);
+            try {
+                saveData();
+            } catch (IOException e){
+                System.out.println ("Enter valid file path");
+                return;
+            }
+
+
         }
     }
 }
