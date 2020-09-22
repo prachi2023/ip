@@ -4,7 +4,10 @@ import duke.task.Task;
 import duke.task.ToDo;
 import duke.task.Deadline;
 import duke.task.Event;
+
 import duke.exception.DukeException;
+
+import duke.Ui.ui;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,25 +16,26 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
 
+
+
 public class Duke {
     public static boolean shouldExit = false;
     public static ArrayList<Task> tasks = new ArrayList<>();
     public static String path = "tasklist.txt";
-
+    public static ui ui;
 
     public static void main(String[] args) {
         // set up scanner
+        ui = new ui();
         Scanner in = new Scanner (System.in);
         String command;
 
-        // Introduction
-        System.out.println ("Hello! I'm Duke");
-        System.out.println("What can I do for you?");
+        ui.printWelcomeMessage();
 
         try{
             setUpFile();
         }catch (IOException e){
-            System.out.println ("Unable to create a file name 'tasklist'");
+            ui.showFileCreatingError(path);
         }
         while (!shouldExit){
             command = in.nextLine();
@@ -50,7 +54,7 @@ public class Duke {
                 loadData();
             }catch (FileNotFoundException e){
                 //should not occur since, it has been checked that there is a file
-                System.out.println("File not found");
+                ui.showFileLoadingError();
             }
         }
     }
@@ -102,82 +106,81 @@ public class Duke {
     }
 
     /* Methods to deal with the different commands */
-    public static void exitDuke (){
+    public static void exitDuke(){
         shouldExit = true;
-        System.out.println("Bye. Hope to see you again soon!");
+        ui.printExitMessage();
     }
     // Print the list of tasks entered
-    public static void printList (){
-        System.out.println("Here is your List of Tasks: ");
+    public static void printList(){
+        ui.printTaskListInfo(tasks.size());
         for (int i = 0; i < tasks.size(); i++){
-            System.out.println(i+1 + ". " + tasks.get(i));
+            ui.printTask(i+1, tasks.get(i).toString());
         }
-        System.out.println("You have " + tasks.size() + " Tasks in the list");
     }
 
-    // Mark a specific task in the list as done
+    // Check the status of the task and accordingly mark it as done
     public static void markTaskInListAsDone(int taskIndexCompleted){
             if (taskIndexCompleted > tasks.size()) {
-                System.out.println("This is not a valid task\nPlease enter a valid task number");
+                ui.showInvalidTaskNumError();
+                return;
             }
-            if (tasks.get(taskIndexCompleted - 1).getIsDone()){
-                System.out.println("This task has already been marked as done!");
+            String task = tasks.get(taskIndexCompleted).toString();
+            if (tasks.get(taskIndexCompleted).getIsDone()){
+                ui.printTaskPreviouslyMarkedDone(task);
             }else{
-                System.out.println("Good Job completing your task! I have marked it as done.");
-                tasks.get(taskIndexCompleted - 1).markTaskDone();
+                tasks.get(taskIndexCompleted).markTaskDone();
+                ui.printTaskMarkedDone(task);
             }
-            System.out.println(tasks.get(taskIndexCompleted - 1));
     }
 
     // Delete a task
     public static void deleteTask(String index){
-        int taskToDelete = Integer.parseInt(index.trim());
+        int taskToDelete = Integer.parseInt(index.trim())-1;
         if (tasks.isEmpty()){
-            System.out.println("There is no task to delete");
+            ui.showEmptyTaskList();
         }
         else if (taskToDelete > tasks.size()) {
-            System.out.println("This is not a valid task\nPlease enter a valid task number");
+            ui.showInvalidTaskNumError();
         }
         else{
-            System.out.println("Alright deleting task: " + tasks.get(taskToDelete - 1));
-            tasks.remove(taskToDelete - 1);
-            System.out.println("Task has been deleted");
+            ui.printDeleteTaskInfo(tasks.get(taskToDelete).toString());
+            tasks.remove(taskToDelete);
         }
     }
 
     // Add the specific type of tasks to the big list of tasks
     public static void addTodo(String task) throws DukeException{
         if (task.equals("")){
-            throw new DukeException("no description");
+            throw new DukeException();
         }
         tasks.add(new ToDo(task));
-        System.out.println("There you go I've added it to the list\n" + tasks.get(tasks.size()-1));
+        ui.printAddedTask(tasks.get(tasks.size()-1).toString());
     }
 
-    public static void addDeadline (String task) throws DukeException{
+    public static void addDeadline(String task) throws DukeException{
         //index 0 refers to the description of the task and index 1 refers to the deadline
         String[] taskDetails = task.split("/by", 2);
         if (taskDetails[0].isEmpty()){
-            throw new DukeException("no description");
+            throw new DukeException();
         }
         if (!task.contains("/by")){
-            throw new DukeException("No /by");
+            throw new DukeException();
         }
         tasks.add(new Deadline(taskDetails[0].trim(), taskDetails[1].trim()));
-        System.out.println("There you go I've added it to the list\n" + tasks.get(tasks.size()-1));
+        ui.printAddedTask(tasks.get(tasks.size()-1).toString());
     }
 
-    public static void addEvent (String task) throws DukeException{
+    public static void addEvent(String task) throws DukeException{
         //index 0 refers to the description of the task and index 1 refers to the deadline
         String[] taskDetails = task.split("/at", 2);
         if (taskDetails[0].isEmpty()){
-            throw new DukeException("no description");
+            throw new DukeException();
         }
         if (!task.contains("/at")){
-            throw new DukeException("No /at");
+            throw new DukeException();
         }
         tasks.add(new Event(taskDetails[0].trim(), taskDetails[1].trim()));
-        System.out.println("There you go I've added it to the list\n" +  tasks.get(tasks.size()-1));
+        ui.printAddedTask(tasks.get(tasks.size()-1).toString());
     }
 
     /* main method do determine command entered by user */
@@ -200,9 +203,9 @@ public class Duke {
                 markTaskInListAsDone(taskNumCompleted);
                 editOrDeleteTaskFile();
             } catch (NumberFormatException e) {
-                System.out.println("Task index is not a number: please enter a valid integer");
+                ui.showInvalidTaskNumError();
             } catch (IOException e){
-                System.out.println ("File is unable to be edited");
+                ui.showFileLoadingError();
             }
             break;
         case "delete":
@@ -210,9 +213,9 @@ public class Duke {
                 deleteTask(userInput[1]);
                 editOrDeleteTaskFile ();
             } catch (NumberFormatException e) {
-                System.out.println("Task index is not a number: please enter a valid integer");
+                ui.showInvalidTaskNumError();
             } catch (IOException e){
-                System.out.println ("File is unable to be edited");
+                ui.showFileEditingError();
             }
             break;
         case "todo":
@@ -220,11 +223,11 @@ public class Duke {
                 addTodo(userInput[1]);
                 addTaskToFile (tasks.size() -1);
             } catch (ArrayIndexOutOfBoundsException e){
-                System.out.println ("Oopsies, seems like you did not enter a description for the task. A todo needs a description!");
+                ui.showInvalidTaskNumError();
             } catch (DukeException e){
-                System.out.println ("Oopsies, seems like you left the description blank. A todo needs a description!");
+                ui.showNoDescriptionError();
             } catch (IOException e){
-                System.out.println ("File is unable to be edited");
+                ui.showFileEditingError();
             }
             break;
         case "deadline":
@@ -232,11 +235,12 @@ public class Duke {
                 addDeadline(userInput[1]);
                 addTaskToFile (tasks.size() -1);
             } catch (ArrayIndexOutOfBoundsException e) {
-                System.out.println("Oopsies, seems like you did not enter a description for the task. A deadline needs a description!");
+                ui.showInvalidTaskNumError();
             } catch (DukeException e){
-                System.out.println("A deadline requires the time it is due");
+                ui.showNoDescriptionError();
+                ui.showNoEventError();
             } catch (IOException e){
-                System.out.println ("File is unable to be edited");
+                ui.showFileEditingError();
             }
             break;
         case "event":
@@ -244,16 +248,17 @@ public class Duke {
                 addEvent(userInput[1]);
                 addTaskToFile (tasks.size() -1);
             } catch (ArrayIndexOutOfBoundsException e) {
-                System.out.println("Oopsies, seems like you did not enter a description for the task. An event needs a description!");
+                ui.showInvalidTaskNumError();
             } catch (DukeException e){
-                System.out.println("An event requires the time of the event");
+                ui.showNoDescriptionError();
+                ui.showNoEventError();
             }catch (IOException e){
-                System.out.println ("File is unable to be edited");
+                ui.showFileEditingError();
             }
             break;
         // If it is none of the above commands, Tell the user to enter a valid command
         default:
-            System.out.println ("Please enter a valid command! I do not understand '" + userInput[0] + "'");
+            ui.showInvalidCommand();
         }
     }
 }
