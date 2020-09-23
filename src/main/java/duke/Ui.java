@@ -1,6 +1,14 @@
-package duke.Ui;
+package duke;
 
-public class ui {
+import java.util.Scanner;
+
+public class Ui {
+    //input
+    public String readCommand(){
+        Scanner in = new Scanner (System.in);
+        return in.nextLine();
+    }
+
     //welcome and exit message
     public void printWelcomeMessage (){
         System.out.println ("Hello! I'm DUKE");
@@ -10,10 +18,11 @@ public class ui {
         System.out.println ("Bye");
         System.out.println ("See you again!");
     }
-
-    //Error messages
-    public void showInvalidTaskNumError (){
-        System.out.println("This is not a valid task\nPlease enter a valid task number");
+    public void showLine(){
+        System.out.println("----------------------------------------------------------");
+    }
+    public void showErrorMessage (String errorMessage){
+        System.out.println (errorMessage);
     }
 
     public void showFileLoadingError (){
@@ -28,20 +37,6 @@ public class ui {
         System.out.println ("Unable to edit file");
     }
 
-    public void showInvalidCommand(){
-        System.out.println ("Please enter a valid command");
-    }
-
-    public void showNoDescriptionError (){
-        System.out.println ("Please enter a description. All Tasks needs a description!");
-    }
-    public void showNoEventError (){
-        System.out.println ("An event requires the time of the event");
-    }
-    public void showNoDeadlineError (){
-        System.out.println ("A Deadline requires the time it is due");
-    }
-
     //Other commands
     public void showEmptyTaskList (){
         System.out.println ("Task List is empty!");
@@ -51,8 +46,9 @@ public class ui {
         System.out.println (index + ". " + task);
     }
 
-    public void printTaskListInfo (int numTasks){
+    public void printTaskListInfo (int numTasks, int numTasksDone){
         System.out.println("You have " + numTasks + " Tasks in the list");
+        System.out.println("You have completed " + numTasksDone +" Tasks");
     }
 
     public void printTaskMarkedDone (String description){
@@ -72,7 +68,6 @@ public class ui {
     public void printAddedTask (String task){
         System.out.println("There you go I've added " + task + " to the list");
     }
-
 
 
 
