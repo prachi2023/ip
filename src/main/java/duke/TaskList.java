@@ -58,6 +58,13 @@ public class TaskList {
         }
         tasks.remove(index);
     }
+    public static Boolean checkTask(int index, String keyword){
+        Task task = tasks.get(index);
+        if (task.getDescription().contains(keyword)){
+            return true;
+        }
+        return false;
+    }
 
     public static Task get(Integer index){
         return tasks.get(index);

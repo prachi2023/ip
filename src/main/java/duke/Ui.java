@@ -69,7 +69,11 @@ public class Ui {
         System.out.println("There you go I've added " + task + " to the list");
     }
 
-
-
+    public void printNoMatchingTask (){
+        System.out.println("There are no tasks that match this keyword");
+    }
+    public void printMatchingTask(){
+        System.out.println("Here are the matching tasks in your list:");
+    }
 
 }
