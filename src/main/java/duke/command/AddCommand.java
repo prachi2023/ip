@@ -5,6 +5,8 @@ import duke.TaskList;
 import duke.Ui;
 import duke.exception.DukeException;
 
+import java.io.IOException;
+
 public class AddCommand extends Command {
     private char taskType;
     private String taskDescription;
@@ -35,6 +37,11 @@ public class AddCommand extends Command {
                 throw new DukeException("Parser error");
         }
         ui.printAddedTask(tasks.get(tasks.size()-1).toString());
+        try{
+            storage.addTaskToFile (tasks.size()-1,tasks);
+        } catch (IOException e){
+            ui.showFileEditingError();
+        }
     }
 
 }

@@ -9,7 +9,7 @@ public class Event extends Task{
     }
 
     public String toString (){
-        return String.format("[E][%s] %s (at: %s)", getStatusIcon(), description, at);
+        return String.format("[E][%s] %s(at:%s)", getStatusIcon(), description, at);
     }
     public String saveFormat(){
         return String.format("E:%s:%s:%s", isDone, description, at);

@@ -5,6 +5,8 @@ import duke.TaskList;
 import duke.Ui;
 import duke.exception.DukeException;
 
+import java.io.IOException;
+
 public class DeleteCommand extends Command {
     private int index;
 
@@ -18,6 +20,11 @@ public class DeleteCommand extends Command {
         }
         ui.printDeleteTaskInfo(tasks.get(index).toString());
         tasks.deleteTask(this.index);
+        try{
+            storage.editOrDeleteTaskFile(tasks);
+        } catch (IOException e){
+            ui.showFileEditingError();
+        }
     }
 
 }

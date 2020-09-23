@@ -7,6 +7,8 @@ import duke.Ui;
 import duke.exception.DukeException;
 import duke.task.Task;
 
+import java.io.IOException;
+
 public class DoneCommand extends Command{
     private Integer taskNum;
 
@@ -22,9 +24,13 @@ public class DoneCommand extends Command{
         if (task.getIsDone()){
             ui.printTaskPreviouslyMarkedDone(task.toString());
         }else{
-
             tasks.markTaskDone(taskNum);
             ui.printTaskMarkedDone(task.toString());
+            try {
+                storage.editOrDeleteTaskFile(tasks);
+            } catch (IOException e){
+                ui.showFileEditingError();
+            }
         }
     }
 }

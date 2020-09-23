@@ -10,7 +10,6 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 
-
 public class Duke {
     public static boolean isExit = false;
     public static TaskList tasks = new TaskList();
@@ -22,6 +21,15 @@ public class Duke {
         // set up scanner
         ui = new Ui();
         ui.printWelcomeMessage();
+        try{
+            storage = new Storage(path);
+            storage.load(tasks);
+        }catch (IOException e){
+            ui.showFileCreatingError(path);
+        }catch (DukeException e){
+            ui.showErrorMessage(e.getErrorMessage());
+        }
+
 /*        try{
             setUpFile();
         }catch (IOException e){
