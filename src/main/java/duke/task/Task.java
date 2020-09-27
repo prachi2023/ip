@@ -1,5 +1,8 @@
 package duke.task;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 public class Task {
     protected String description;
     protected boolean isDone;
@@ -22,5 +25,17 @@ public class Task {
     }
     public String getStatusIcon(){
         return (isDone ? "\u2713": "\u2718");
+    }
+    public int getDay(){
+        return 0;
+    }
+    public int getYear(){
+        return 0;
+    }
+    public int getMonth(){
+        return 0;
+    }
+    public LocalDate getDate(){
+        return LocalDate.parse("0000:00:00");
     }
 }

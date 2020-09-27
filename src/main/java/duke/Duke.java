@@ -12,7 +12,7 @@ public class Duke {
     public static Storage storage;
 
     public static void main(String[] args) {
-        //Instantiate Ui and Tasklist
+        //Instantiate Ui, Tasklist and Parser
         Ui ui = new Ui();
         TaskList tasks = new TaskList();
         Parser parser = new Parser();
@@ -30,7 +30,7 @@ public class Duke {
 
         while (!isExit) {
             try {
-                ui.showLine();
+                ui.printLine();
                 String fullCommand = ui.readCommand();
                 Command c = Parser.parseInput(fullCommand, ui);
                 c.execute(ui, tasks, storage);
@@ -39,6 +39,7 @@ public class Duke {
                 ui.showErrorMessage(e.getErrorMessage());
             }
         }
+        ui.printExitMessage();
     }
 }
 

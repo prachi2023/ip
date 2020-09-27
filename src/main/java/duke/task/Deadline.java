@@ -20,7 +20,7 @@ public class Deadline extends Task {
         return String.format("D:%s:%s:%s:%s", isDone, description, date.toString(), time.toString());
     }
     public String dateToString (){
-        String day = date.format(DateTimeFormatter.ofPattern("d"));
+        int day = date.getDayOfMonth();
         int year = date.getYear();
         String month = date.getMonth().toString();
 
@@ -45,5 +45,18 @@ public class Deadline extends Task {
         }
         min = time.getMinute();
         return String.format("%s:%02d %s", hour, min, period);
+    }
+
+    public int getDay(){
+        return date.getDayOfMonth();
+    }
+    public int getYear(){
+        return date.getYear();
+    }
+    public int getMonth(){
+        return date.getMonthValue();
+    }
+    public LocalDate getDate(){
+        return date;
     }
 }

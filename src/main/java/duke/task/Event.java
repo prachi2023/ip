@@ -48,4 +48,16 @@ public class Event extends Task{
         min = time.getMinute();
         return String.format("%s:%02d %s", hour, min, period);
     }
+    public int getDay(){
+        return date.getDayOfMonth();
+    }
+    public int getYear(){
+        return date.getYear();
+    }
+    public int getMonth(){
+        return date.getMonthValue();
+    }
+    public LocalDate getDate(){
+        return date;
+    }
 }

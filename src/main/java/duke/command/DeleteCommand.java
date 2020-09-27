@@ -16,9 +16,9 @@ public class DeleteCommand extends Command {
     @Override
     public void execute(Ui ui, TaskList tasks, Storage storage) throws DukeException {
         if (index < 0 || index >= tasks.size()){
-            throw new DukeException ("Invalid task size");
+            throw new DukeException ("Invalid task number");
         }
-        ui.printDeleteTaskInfo(tasks.get(index).toString());
+        ui.printDeletedTask(tasks.get(index).toString());
         tasks.deleteTask(this.index);
         try{
             storage.editOrDeleteTaskFile(tasks);

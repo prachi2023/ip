@@ -26,15 +26,44 @@ public class Parser {
             case "bye":
                 return new ExitCommand();
             case "list":
-                return new ListCommand();
+                return new ListCommand('N');
             case "done":
-                taskNum = getIntegerIndex(userInput[1], ui);
+                taskNum = getInteger(userInput[1], ui)- 1;
                 return new DoneCommand(taskNum);
             case "delete":
-                taskNum = getIntegerIndex(userInput[1], ui);
+                taskNum = getInteger(userInput[1], ui) -1;
                 return new DeleteCommand(taskNum);
+
+            case "today":
+                return new ListCommand('D');
+            case "month":
+                int month;
+                try {
+                     month = getInteger(userInput[1], ui);
+                } catch (ArrayIndexOutOfBoundsException e){
+                   month = 0;
+                }
+                if (month > 12 || month < 0){
+                    throw new DukeException("Please enter a valid month number from 0 to 12. 0 shows the tasks in the current month");
+                }
+                return new ListCommand('M', month);
+            case "year":
+                int year;
+                try {
+                    year = getInteger(userInput[1], ui);
+                } catch (ArrayIndexOutOfBoundsException e){
+                    year = 0;
+                }
+                if (year < 0){
+                    throw new DukeException("Please enter a valid year from 0. 0 shows the tasks in the current year");
+                }
+                return new ListCommand('Y', year);
             case "todo":
+                if (userInput[1].equals("")){
+                    throw new DukeException("No description of added");
+                }
                 return new AddCommand('T', userInput[1]);
+
             case "deadline":
                 String[] deadlineDetails = parseDeadline(userInput[1]); //splits the input into the description and the dateTime
                 String[] dateTimeDetails = deadlineDetails[1].trim().split(" ", 2); //splits the dateTime string into date and Time
@@ -73,7 +102,7 @@ public class Parser {
         return d;
     }
 
-    static LocalTime parseTime(String time, Ui ui) throws DukeException {
+    static LocalTime parseTime(String time, Ui ui)  {
         LocalTime t;
         try {
             t = LocalTime.parse(time.trim());
@@ -106,10 +135,10 @@ public class Parser {
         return taskDetails;
     }
 
-    private static Integer getIntegerIndex (String indexInput, Ui ui) {
+    private static Integer getInteger (String indexInput, Ui ui) {
         Integer taskNum = -1;
         try {
-            taskNum = Integer.parseInt(indexInput.trim()) - 1;
+            taskNum = Integer.parseInt(indexInput.trim());
         } catch (NumberFormatException e) {
             ui.showErrorMessage("Number Format Exception");
         }

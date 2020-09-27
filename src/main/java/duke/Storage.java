@@ -1,14 +1,11 @@
 package duke;
 import duke.exception.DukeException;
-import duke.task.Task;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Storage {
@@ -36,7 +33,6 @@ public class Storage {
                 case "T":
                     tasks.addTodo(task[2]);
                     break;
-
                 case "D":
                     date = parser.parseDate(task[3]);
                     time = LocalTime.parse(task[4]);
