@@ -1,17 +1,51 @@
 package duke.task;
 
-public class Event extends Task{
-    private String at;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
-    public Event(String description, String at){
+public class Event extends Task{
+    private LocalDate date;
+    private LocalTime time;
+
+    public Event(String description, LocalDate date, LocalTime time){
         super(description);
-        this.at = at;
+        this.date = date;
+        this.time = time;
     }
 
     public String toString (){
-        return String.format("[E][%s] %s(at:%s)", getStatusIcon(), description, at);
+        return String.format("[E][%s] %s(at:%s %s)", getStatusIcon(), description, dateToString(), timeToString());
     }
     public String saveFormat(){
-        return String.format("E:%s:%s:%s", isDone, description, at);
+        return String.format("E:%s:%s:%s:%s", isDone, description, date.toString(), time.toString());
+    }
+
+    public String dateToString (){
+        String day = date.format(DateTimeFormatter.ofPattern("d"));
+        int year = date.getYear();
+        String month = date.getMonth().toString();
+
+        return String.format("%s %s %s", day, month, year);
+    }
+
+    public String timeToString(){
+        int hour;
+        int min;
+        String period; //am or pm
+
+        if (time.getHour() > 12){
+            hour = (time.getHour() -12);
+            period = "pm";
+
+        } else if (time.getHour() == 0){
+            hour = 12;
+            period = "am";
+        } else {
+            hour = time.getHour();
+            period = "am";
+        }
+        min = time.getMinute();
+        return String.format("%s:%02d %s", hour, min, period);
     }
 }
