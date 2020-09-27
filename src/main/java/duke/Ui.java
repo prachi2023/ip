@@ -18,15 +18,13 @@ public class Ui {
         System.out.println ("Bye");
         System.out.println ("See you again!");
     }
-    public void showLine(){
+    public void printLine(){
         System.out.println("----------------------------------------------------------");
     }
+
+    //Error messages
     public void showErrorMessage (String errorMessage){
         System.out.println (errorMessage);
-    }
-
-    public void showFileLoadingError (){
-        System.out.println("File not found");
     }
 
     public void showFileCreatingError (String fileName){
@@ -37,20 +35,17 @@ public class Ui {
         System.out.println ("Unable to edit file");
     }
 
-    //Other commands
-    public void showEmptyTaskList (){
-        System.out.println ("Task List is empty!");
-    }
-
-    public void printTask(int index, String task){
+    //Print task and list info
+    public void printTaskInfo(int index, String task){
         System.out.println (index + ". " + task);
     }
 
-    public void printTaskListInfo (int numTasks, int numTasksDone){
+    public void printListInfo(int numTasks, int numTasksDone){
         System.out.println("You have " + numTasks + " Tasks in the list");
         System.out.println("You have completed " + numTasksDone +" Tasks");
     }
 
+    //Print commands relating to actions done by the user: adding, deleting and marking as done
     public void printTaskMarkedDone (String description){
         System.out.println("Good Job completing your task! I have marked it as done.");
         System.out.println(description);
@@ -60,7 +55,7 @@ public class Ui {
         System.out.println(description);
     }
 
-    public void printDeleteTaskInfo (String task){
+    public void printDeletedTask(String task){
         System.out.println("Alright deleting task: " + task);
         System.out.println("Task has been deleted");
     }
@@ -68,7 +63,6 @@ public class Ui {
     public void printAddedTask (String task){
         System.out.println("There you go I've added " + task + " to the list");
     }
-
     public void printNoMatchingTask (){
         System.out.println("There are no tasks that match this keyword");
     }

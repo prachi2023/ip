@@ -1,12 +1,11 @@
 package duke;
 import duke.exception.DukeException;
-import duke.task.Task;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Scanner;
 
 public class Storage {
@@ -24,19 +23,25 @@ public class Storage {
 
     }
 
-    public void load (TaskList tasks) throws DukeException{
+    public void load (TaskList tasks, Parser parser) throws DukeException{
         while (s.hasNext()){
             String taskInput = s.nextLine();
-            String[] task = taskInput.split(":");
+            String[] task = taskInput.split(":", 5);
+            LocalDate date;
+            LocalTime time;
             switch (task[0]) {
                 case "T":
                     tasks.addTodo(task[2]);
                     break;
                 case "D":
-                    tasks.addDeadline(task[2], task[3]);
+                    date = parser.parseDate(task[3]);
+                    time = LocalTime.parse(task[4]);
+                    tasks.addDeadline(task[2], date, time);
                     break;
                 case "E":
-                    tasks.addEvent(task[2], task[3]);
+                    date = parser.parseDate(task[3]);
+                    time = LocalTime.parse(task[4]);
+                    tasks.addEvent(task[2], date, time);
                     break;
                 default:
                     throw new DukeException("File format error");
