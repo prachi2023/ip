@@ -3,7 +3,6 @@ package duke.command;
 import duke.Storage;
 import duke.TaskList;
 import duke.Ui;
-import duke.exception.DukeException;
 import duke.task.Task;
 
 import java.time.LocalDate;
@@ -23,7 +22,7 @@ public class ListCommand extends Command {
     }
 
     @Override
-    public void execute(Ui ui, TaskList tasks, Storage storage) throws DukeException {
+    public void execute(Ui ui, TaskList tasks, Storage storage){
        for (int i = 0; i < tasks.size(); i++){
             if (checkPrintingStatus(tasks.get(i))){
                 ui.printTaskInfo(i+1, tasks.get(i).toString());

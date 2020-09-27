@@ -1,11 +1,6 @@
 package duke;
 
-import duke.command.AddCommand;
-import duke.command.Command;
-import duke.command.DeleteCommand;
-import duke.command.DoneCommand;
-import duke.command.ExitCommand;
-import duke.command.ListCommand;
+import duke.command.*;
 import duke.exception.DukeException;
 
 import java.time.LocalDate;
@@ -17,16 +12,17 @@ public class Parser {
         // Find the command word entered
         String[] userInput = input.split(" ",2);
         String command = userInput[0];
-
         int taskNum;
         LocalTime time;
         LocalDate date;
-
+        // Find the right command class to execute the action
         switch (command) {
             case "bye":
                 return new ExitCommand();
             case "list":
                 return new ListCommand('N');
+            case "find":
+                return new FindCommand(userInput[1]);
             case "done":
                 taskNum = getInteger(userInput[1], ui)- 1;
                 return new DoneCommand(taskNum);
@@ -90,8 +86,6 @@ public class Parser {
         }
     }
 
-
-
     static LocalDate parseDate(String date) throws DukeException {
         LocalDate d;
         try {
@@ -113,7 +107,6 @@ public class Parser {
         return t;
     }
 
-
     private static String[] parseDeadline (String userInput) throws DukeException{
         String[] taskDetails = userInput.split("/by", 2);
         if (!userInput.contains("/by")){
@@ -134,7 +127,7 @@ public class Parser {
         }
         return taskDetails;
     }
-
+    // Used for the determining which task to delete or mark as done
     private static Integer getInteger (String indexInput, Ui ui) {
         Integer taskNum = -1;
         try {
