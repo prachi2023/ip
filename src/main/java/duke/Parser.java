@@ -1,11 +1,6 @@
 package duke;
 
-import duke.command.AddCommand;
-import duke.command.Command;
-import duke.command.DeleteCommand;
-import duke.command.DoneCommand;
-import duke.command.ExitCommand;
-import duke.command.ListCommand;
+import duke.command.*;
 import duke.exception.DukeException;
 
 public class Parser {
@@ -13,14 +8,15 @@ public class Parser {
         // Find the command word entered
         String[] userInput = input.split(" ",2);
         String command = userInput[0];
-
         int taskNum;
-
+        // Find the right command class to execute the action
         switch (command) {
             case "bye":
                 return new ExitCommand();
             case "list":
                 return new ListCommand();
+            case "find":
+                return new FindCommand(userInput[1]);
             case "done":
                 taskNum = getIntegerIndex(userInput[1], ui);
                 return new DoneCommand(taskNum);
@@ -41,6 +37,7 @@ public class Parser {
         }
     }
 
+    // Split the user input to the description and date
     private static String[] parseDeadline (String userInput) throws DukeException{
         String[] taskDetails = userInput.split("/by", 2);
         if (!userInput.contains("/by")){
@@ -56,6 +53,7 @@ public class Parser {
         return taskDetails;
     }
 
+    // Used for the determining which task to delete or mark as done
     private static Integer getIntegerIndex (String indexInput, Ui ui) {
         Integer taskNum = -1;
         try {
