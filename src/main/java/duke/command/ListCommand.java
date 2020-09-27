@@ -10,15 +10,19 @@ import java.time.LocalDate;
 public class ListCommand extends Command {
     private static char tag;
     private static int value;
-    private static int numTasksPrinted = 0;
-    private static int numTasksDone = 0;
+    private static int numTasksPrinted ;
+    private static int numTasksDone ;
 
     public ListCommand (char tag){
         this.tag = tag;
+        numTasksDone = 0;
+        numTasksPrinted = 0;
     }
     public ListCommand (char tag, int value){
         this.tag = tag;
         this.value = value;
+        numTasksDone = 0;
+        numTasksPrinted = 0;
     }
 
     @Override
