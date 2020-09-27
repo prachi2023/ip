@@ -17,6 +17,8 @@ public class Parser {
         LocalDate date;
         // Find the right command class to execute the action
         switch (command) {
+            case "help":
+                return new HelpCommand();
             case "bye":
                 return new ExitCommand();
             case "list":
@@ -29,7 +31,6 @@ public class Parser {
             case "delete":
                 taskNum = getInteger(userInput[1], ui) -1;
                 return new DeleteCommand(taskNum);
-
             case "today":
                 return new ListCommand('D');
             case "month":
@@ -108,9 +109,9 @@ public class Parser {
     }
 
     private static String[] parseDeadline (String userInput) throws DukeException{
-        String[] taskDetails = userInput.split("/by", 2);
-        if (!userInput.contains("/by")){
-            throw new DukeException("No /by for deadline");
+        String[] taskDetails = userInput.split("by", 2);
+        if (!userInput.contains("by")){
+            throw new DukeException("No 'by' for deadline");
         }
         if (taskDetails[0].equals("")){
             throw new DukeException("No description of task added");
@@ -118,9 +119,9 @@ public class Parser {
         return taskDetails;
     }
     private static String[] parseEvent (String userInput) throws DukeException{
-        String[] taskDetails = userInput.split("/at", 2);
-        if (!userInput.contains("/at")){
-            throw new DukeException("No /at for event");
+        String[] taskDetails = userInput.split("at", 2);
+        if (!userInput.contains("at")){
+            throw new DukeException("No 'at' for event");
         }
         if (taskDetails[0].equals("")){
             throw new DukeException("No description of task added");

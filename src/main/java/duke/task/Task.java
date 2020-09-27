@@ -35,4 +35,7 @@ public class Task {
     public LocalDate getDate(){
         return LocalDate.parse("0000:00:00");
     }
+    public String getDescription(){
+        return this.description;
+    }
 }
