@@ -6,6 +6,7 @@ import duke.task.Event;
 import duke.task.Task;
 import duke.task.ToDo;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class TaskList {
@@ -24,14 +25,11 @@ public class TaskList {
         }
         tasks.add(new ToDo(task));
     }
-    public static void addDeadline (String description, String time) throws DukeException {
+    public static void addDeadline (String description, LocalDate date) throws DukeException {
         if (description.equals("")){
             throw new DukeException("No description of added");
         }
-        if (time.equals("")){
-            throw new DukeException("No deadline written");
-        }
-        tasks.add(new Deadline(description, time));
+        tasks.add(new Deadline(description, date));
     }
     public static void addEvent (String description, String time) throws DukeException {
         if (description.equals("")){

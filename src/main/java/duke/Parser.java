@@ -8,6 +8,9 @@ import duke.command.ExitCommand;
 import duke.command.ListCommand;
 import duke.exception.DukeException;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+
 public class Parser {
     public static Command parseInput(String input, Ui ui) throws DukeException{
         // Find the command word entered
@@ -31,7 +34,8 @@ public class Parser {
                 return new AddCommand('T', userInput[1]);
             case "deadline":
                 String[] deadlineDetails = parseDeadline(userInput[1]);
-                return new AddCommand('D', deadlineDetails[0], deadlineDetails[1]);
+                LocalDate date = parseDate(deadlineDetails[1]);
+                return new AddCommand('D', deadlineDetails[0], date);
             case "event":
                 String[] eventDetails = parseEvent(userInput[1]);
                 return new AddCommand('E', eventDetails[0], eventDetails[1]);
@@ -40,6 +44,17 @@ public class Parser {
                 throw new DukeException ("Invalid command Entered");
         }
     }
+
+    static LocalDate parseDate(String deadlineDetail) throws DukeException {
+        LocalDate d;
+        try {
+            d = LocalDate.parse(deadlineDetail.trim());
+        } catch (DateTimeParseException e){
+            throw new DukeException("Please enter the date in the format yyyy-mm-dd");
+        }
+        return d;
+    }
+
 
     private static String[] parseDeadline (String userInput) throws DukeException{
         String[] taskDetails = userInput.split("/by", 2);

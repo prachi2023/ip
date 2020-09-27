@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -24,7 +25,7 @@ public class Storage {
 
     }
 
-    public void load (TaskList tasks) throws DukeException{
+    public void load (TaskList tasks, Parser parser) throws DukeException{
         while (s.hasNext()){
             String taskInput = s.nextLine();
             String[] task = taskInput.split(":");
@@ -33,7 +34,8 @@ public class Storage {
                     tasks.addTodo(task[2]);
                     break;
                 case "D":
-                    tasks.addDeadline(task[2], task[3]);
+                    LocalDate date = parser.parseDate(task[3]);
+                    tasks.addDeadline(task[2], date);
                     break;
                 case "E":
                     tasks.addEvent(task[2], task[3]);

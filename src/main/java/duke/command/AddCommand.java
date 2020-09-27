@@ -6,15 +6,22 @@ import duke.Ui;
 import duke.exception.DukeException;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 public class AddCommand extends Command {
     private char taskType;
     private String taskDescription;
     private String taskTime;
+    private LocalDate date;
 
     public AddCommand (char taskType, String taskDescription){
         this.taskType = taskType;
         this.taskDescription = taskDescription;
+    }
+    public AddCommand (char taskType, String taskDescription, LocalDate date){
+        this.taskType = taskType;
+        this.taskDescription = taskDescription;
+        this.date = date;
     }
     public AddCommand (char taskType, String taskDescription, String time){
         this.taskType = taskType;
@@ -28,7 +35,7 @@ public class AddCommand extends Command {
                 tasks.addTodo(taskDescription);
                 break;
             case 'D':
-                tasks.addDeadline(taskDescription, taskTime);
+                tasks.addDeadline(taskDescription, date);
                 break;
             case 'E':
                 tasks.addEvent(taskDescription, taskTime);
