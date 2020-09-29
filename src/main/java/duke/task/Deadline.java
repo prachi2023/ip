@@ -1,9 +1,8 @@
 package duke.task;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
-public class Deadline extends Task {
+public class Deadline extends Task{
     private LocalDate date;
     private LocalTime time;
 
@@ -17,7 +16,7 @@ public class Deadline extends Task {
         return String.format("[D][%s] %s(by:%s %s)", getStatusIcon(), description, dateToString(), timeToString());
     }
     public String saveFormat(){
-        return String.format("D:%s:%s:%s:%s", isDone, description, date.toString(), time.toString());
+        return String.format("deadline:%s:%s:%s:%s", isDone, description, date.toString(), time.toString());
     }
     public String dateToString (){
         int day = date.getDayOfMonth();

@@ -8,6 +8,12 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Scanner;
 
+/**
+ * Represents the file that stores the data. A <code>Storage</code> object corresponds to
+ * a filepath where the file is stored
+ * a scanner <code>s </code> to read the file data
+ * and a file <code>f </code> which stores the data
+ */
 public class Storage {
     private String filePath;
     File f;
@@ -51,14 +57,25 @@ public class Storage {
             }
         }
     }
-    public void addTaskToFile (int index, TaskList tasks) throws IOException{
+
+    /**
+     * Writes to the file to add a line about the new Task that has been added to the tasklist
+     * @param index index of the task in the tasklist to be added
+     * @param tasks Tasklist of tasks
+     * @throws IOException
+     */
+    public void addTaskToFile (int index, TaskList tasks) throws IOException, DukeException {
         FileWriter fwAppend = new FileWriter(this.filePath, true);
         String taskToWrite = tasks.get(index).saveFormat();
         fwAppend.write(taskToWrite + System.lineSeparator());
         fwAppend.close();
     }
-
-    public void editOrDeleteTaskFile (TaskList tasks) throws IOException{
+    /**
+     * Rewrites every task in the tasklist to the file
+     * @param tasks Tasklist of tasks
+     * @throws IOException
+     */
+    public void editOrDeleteTaskFile (TaskList tasks) throws IOException, DukeException {
         // Delete all the data in the original file
         FileWriter fw = new FileWriter(filePath);
         fw.write("");

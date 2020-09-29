@@ -2,14 +2,26 @@ package duke;
 
 import java.util.Scanner;
 
+/**
+ * The class deals with all interactions with the user.
+ * Input from the user is gotten using this class
+ * All the outputs to the command line are sent from this class
+ */
 public class Ui {
     //input
+
+    /**
+     * Returns a String that the user enters into the command line
+     * Method returns once the user has clicked "enter"
+     * @return one line of the users input
+     */
     public String readCommand(){
         Scanner in = new Scanner (System.in);
         return in.nextLine();
     }
 
     //welcome and exit message
+
     public void printWelcomeMessage (){
         System.out.println ("Hello! I'm DUKE");
         System.out.println ("What can I do for you?");
@@ -36,9 +48,21 @@ public class Ui {
     }
 
     //Print task and list info
+
+    /**
+     * Prints out the Task information along with the index of the task in the task list
+     * @param index Position of the task in the TaskList
+     * @param task Description of the task along with other information in a string format
+     */
     public void printTaskInfo(int index, String task){
         System.out.println (index + ". " + task);
     }
+
+    /**
+     * Prints out the summary of the tasks printed, including the total num of tasks and the num completed
+     * @param numTasks Number of tasks that the ListCommand has printed according to the constraints given
+     * @param numTasksDone Number of tasks that have been completed out of the tasks printed
+     */
 
     public void printListInfo(int numTasks, int numTasksDone){
         System.out.println("You have " + numTasks + " Tasks in the list");
@@ -50,9 +74,14 @@ public class Ui {
         System.out.println("Good Job completing your task! I have marked it as done.");
         System.out.println(description);
     }
-    public void printTaskPreviouslyMarkedDone (String description){
+
+    /**
+     * Tells the user that the task entered by the user has been marked as done previously
+     * @param task Description of the task along with other information in a string format
+     */
+    public void printTaskPreviouslyMarkedDone (String task){
         System.out.println("This task has already been marked as done!");
-        System.out.println(description);
+        System.out.println(task);
     }
 
     public void printDeletedTask(String task){
@@ -70,6 +99,10 @@ public class Ui {
         System.out.println("Here are the matching tasks in your list:");
     }
 
+    /**
+     * Prints out all the commands that the user can enter
+     * Shows the format in which the user needs to enter the commands
+     */
     public void printCommandInfo() {
         String helpInfo = "Available Commands:\n" +
                 "help: Prints out available commands\n" +
