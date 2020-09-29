@@ -21,7 +21,10 @@ public class Storage {
 
     public Storage (String filePath) throws IOException {
         this.filePath = filePath;
+
         f = new File(filePath);
+        String fullFilePath = f.getAbsolutePath();
+        f = new File(fullFilePath);
         if (!f.exists()){
             f.createNewFile();
         }

@@ -26,6 +26,7 @@ public class Parser {
         // Get the command word entered
         String[] userInput = input.split(" ",2);
         String command = userInput[0];
+        String[] detailsSplit;
         int taskNum;
         LocalTime time;
         LocalDate date;
@@ -64,31 +65,37 @@ public class Parser {
                 }
                 return new ListCommand('Y', year);
             case "todo":
+                String description;
+                try{
+                    description = userInput[1];
+                } catch(ArrayIndexOutOfBoundsException e){
+                    throw new DukeException("invalid number of arguments enetered");
+                }
                 if (userInput[1].equals("")){
                     throw new DukeException("No description of added");
                 }
-                return new AddCommand('T', userInput[1]);
+                return new AddCommand('T', description);
 
             case "deadline":
-                String[] deadlineDetails = parseDeadline(userInput[1]); //splits the input into the description and the dateTime
-                String[] dateTimeDetails = deadlineDetails[1].trim().split(" ", 2); //splits the dateTime string into date and Time
-                date = parseDate(dateTimeDetails[0].trim());
-                try {
+                try{
+                    detailsSplit = parseDeadline(userInput[1]); //splits the input into the description and the dateTime
+                    String[] dateTimeDetails = detailsSplit[1].trim().split(" ", 2); //splits the dateTime string into date and Time
+                    date = parseDate(dateTimeDetails[0].trim());
                     time = parseTime(dateTimeDetails[1], ui);
                 } catch (ArrayIndexOutOfBoundsException e){
-                    time = parseTime(" ", ui);
+                    throw new DukeException("invalid number of arguments entered");
                 }
-                return new AddCommand('D', deadlineDetails[0], date, time);
+                return new AddCommand('D', detailsSplit[0], date, time);
             case "event":
-                String[] eventDetails = parseEvent(userInput[1]);//splits the input into the description and the dateTime
-                dateTimeDetails = eventDetails[1].trim().split(" ", 2); //splits the dateTime string into date and Time
-                date = parseDate(dateTimeDetails[0].trim());
                 try {
+                    detailsSplit = parseEvent(userInput[1]);//splits the input into the description and the dateTime
+                    String[] dateTimeDetails = detailsSplit[1].trim().split(" ", 2); //splits the dateTime string into date and Time
+                    date = parseDate(dateTimeDetails[0].trim());
                     time = parseTime(dateTimeDetails[1], ui);
                 } catch (ArrayIndexOutOfBoundsException e){
-                    time = parseTime(" ", ui);
+                    throw new DukeException("invalid number of arguments entered");
                 }
-                return new AddCommand('E', eventDetails[0],date, time);
+                return new AddCommand('E', detailsSplit[0],date, time);
             // If it is none of the above commands, Tell the user to enter a valid command
             default:
                 throw new DukeException ("Invalid command Entered");
