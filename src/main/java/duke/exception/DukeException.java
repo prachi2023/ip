@@ -1,5 +1,9 @@
 package duke.exception;
 
+/**
+ * DukeException represents exceptions that are unique to Duke
+ * It stores the error message to be shown to the user
+ */
 public class DukeException extends Exception {
     private String errorMessage;
 

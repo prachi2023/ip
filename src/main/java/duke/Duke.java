@@ -20,7 +20,7 @@ public class Duke {
 
         // Set up and retrieve data from file
         try{
-            storage = new Storage(path);
+            storage = new Storage(filepath);
             storage.load(tasks, parser);
         }catch (IOException e){
             ui.showFileCreatingError(path);

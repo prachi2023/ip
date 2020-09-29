@@ -12,7 +12,6 @@ import java.time.LocalTime;
 public class AddCommand extends Command {
     private char taskType;
     private String taskDescription;
-    private String taskTime;
     private LocalDate date;
     private LocalTime time;
 

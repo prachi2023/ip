@@ -29,6 +29,12 @@ public class Storage {
 
     }
 
+    /**
+     * Reads the tasks from the file, if there is a file that already existed
+     * @param tasks Tasklist where the tasks are stored
+     * @param parser Parser to parse the information into the relevant Object types
+     * @throws DukeException
+     */
     public void load (TaskList tasks, Parser parser) throws DukeException{
         while (s.hasNext()){
             String taskInput = s.nextLine();

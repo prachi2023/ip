@@ -43,6 +43,11 @@ public class Task {
     public Boolean getIsDone (){
         return this.isDone;
     }
+
+    /**
+     * Returns a String of the icon to be shown to the user when printing the task
+     * @return status icon
+     */
     public String getStatusIcon(){
         return (isDone ? "Done": "X");
     }
