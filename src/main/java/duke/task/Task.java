@@ -1,7 +1,12 @@
 package duke.task;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
+
+/**
+ * Represents work that has to be done. A <code>Task</code> object corresponds to
+ * a task represented using a string for the description of it eg <code> CS2113 tutorial </code>
+ * and a Boolean to keep track of whether it has been completed
+ */
 
 public class Task {
     protected String description;
@@ -11,9 +16,24 @@ public class Task {
         this.description = description;
         this.isDone = false;
     }
+
+    /**
+     * Returns a String of the task with the format of "[isDone] description"
+     * Method always returns immediately
+     *
+     * @return task information
+     */
     public String toString (){
         return String.format("[%s] %s", getStatusIcon(), description);
     }
+
+    /**
+     * Returns a string of the task information
+     * Formatted with : between each new piece of information
+     * Use this format to save it to storage
+     *
+     * @return task information
+     */
     public String saveFormat(){
         return String.format("%s:%s", isDone, description);
     }
@@ -24,8 +44,12 @@ public class Task {
         return this.isDone;
     }
     public String getStatusIcon(){
-        return (isDone ? "\u2713": "\u2718");
+        return (isDone ? "Done": "X");
     }
+    public String getDescription(){
+        return this.description;
+    }
+    // These return 0 as there is no dateTime associated with a basic task
     public int getYear(){
         return 0;
     }
@@ -35,7 +59,5 @@ public class Task {
     public LocalDate getDate(){
         return LocalDate.parse("0000:00:00");
     }
-    public String getDescription(){
-        return this.description;
-    }
+
 }

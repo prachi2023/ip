@@ -5,18 +5,20 @@ import duke.exception.DukeException;
 import java.io.IOException;
 
 
-
 public class Duke {
     public static boolean isExit = false;
     public static String path = "tasklist.txt";
-    public static Storage storage;
+    private Storage storage;
+    private TaskList tasks;
+    private Ui ui;
+    private Parser parser;
 
-    public static void main(String[] args) {
-        //Instantiate Ui, Tasklist and Parser
-        Ui ui = new Ui();
-        TaskList tasks = new TaskList();
-        Parser parser = new Parser();
-        // Set up and load data from file
+    public Duke (String filepath ){
+        ui = new Ui();
+        tasks = new TaskList();
+        parser = new Parser();
+
+        // Set up and retrieve data from file
         try{
             storage = new Storage(path);
             storage.load(tasks, parser);
@@ -25,7 +27,10 @@ public class Duke {
         }catch (DukeException e){
             ui.showErrorMessage(e.getErrorMessage());
         }
+    }
 
+
+    public void run(){
         ui.printWelcomeMessage();
 
         while (!isExit) {
@@ -40,6 +45,9 @@ public class Duke {
             }
         }
         ui.printExitMessage();
+    }
+    public static void main(String[] args) {
+        new Duke(path).run();
     }
 }
 

@@ -7,15 +7,29 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Deals with understanding the user input
+ * Ensures that the user has entered the commands in the right format
+ */
 public class Parser {
+    /**
+     * Returns a Command that can then be executed
+     * The String input is minimally broken down into the first word entered which should be the command name
+     * An error is thrown when the user has not entered valid formats for the inputs for the various commands
+     *
+     * @param input the input that the user has entered
+     * @param ui required to print error messages when input is entered in the wrong format
+     * @return Command class that is required to execute the user's input
+     * @throws DukeException
+     */
     public static Command parseInput(String input, Ui ui) throws DukeException{
-        // Find the command word entered
+        // Get the command word entered
         String[] userInput = input.split(" ",2);
         String command = userInput[0];
         int taskNum;
         LocalTime time;
         LocalDate date;
-        // Find the right command class to execute the action
+        // Find the right command class to return
         switch (command) {
             case "help":
                 return new HelpCommand();
@@ -36,12 +50,9 @@ public class Parser {
             case "month":
                 int month;
                 try {
-                     month = getInteger(userInput[1], ui);
+                    month = getInteger(userInput[1], ui);
                 } catch (ArrayIndexOutOfBoundsException e){
-                   month = 0;
-                }
-                if (month > 12 || month < 0){
-                    throw new DukeException("Please enter a valid month number from 0 to 12. 0 shows the tasks in the current month");
+                    month = 0;
                 }
                 return new ListCommand('M', month);
             case "year":
@@ -50,9 +61,6 @@ public class Parser {
                     year = getInteger(userInput[1], ui);
                 } catch (ArrayIndexOutOfBoundsException e){
                     year = 0;
-                }
-                if (year < 0){
-                    throw new DukeException("Please enter a valid year from 0. 0 shows the tasks in the current year");
                 }
                 return new ListCommand('Y', year);
             case "todo":
@@ -87,7 +95,7 @@ public class Parser {
         }
     }
 
-    static LocalDate parseDate(String date) throws DukeException {
+   protected static LocalDate parseDate(String date) throws DukeException {
         LocalDate d;
         try {
             d = LocalDate.parse(date.trim());
@@ -97,7 +105,7 @@ public class Parser {
         return d;
     }
 
-    static LocalTime parseTime(String time, Ui ui)  {
+    protected static LocalTime parseTime(String time, Ui ui)  {
         LocalTime t;
         try {
             t = LocalTime.parse(time.trim());

@@ -17,9 +17,6 @@ public class DoneCommand extends Command{
     }
     @Override
     public void execute(Ui ui, TaskList tasks, Storage storage) throws DukeException {
-        if (this.taskNum > tasks.size()) {
-            throw new DukeException("Please enter a valid task number");
-        }
         Task task = tasks.get(taskNum);
         if (task.getIsDone()){
             ui.printTaskPreviouslyMarkedDone(task.toString());
