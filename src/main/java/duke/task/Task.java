@@ -62,7 +62,7 @@ public class Task {
         return 0;
     }
     public LocalDate getDate(){
-        return LocalDate.parse("0000:00:00");
+        return LocalDate.now();
     }
 
 }

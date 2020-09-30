@@ -69,7 +69,7 @@ public class Parser {
                 try{
                     description = userInput[1];
                 } catch(ArrayIndexOutOfBoundsException e){
-                    throw new DukeException("invalid number of arguments enetered");
+                    throw new DukeException("invalid number of arguments entered");
                 }
                 if (userInput[1].equals("")){
                     throw new DukeException("No description of added");
@@ -81,7 +81,7 @@ public class Parser {
                     detailsSplit = parseDeadline(userInput[1]); //splits the input into the description and the dateTime
                     String[] dateTimeDetails = detailsSplit[1].trim().split(" ", 2); //splits the dateTime string into date and Time
                     date = parseDate(dateTimeDetails[0].trim());
-                    time = parseTime(dateTimeDetails[1], ui);
+                    time = parseTime(dateTimeDetails[1]);
                 } catch (ArrayIndexOutOfBoundsException e){
                     throw new DukeException("invalid number of arguments entered");
                 }
@@ -91,14 +91,14 @@ public class Parser {
                     detailsSplit = parseEvent(userInput[1]);//splits the input into the description and the dateTime
                     String[] dateTimeDetails = detailsSplit[1].trim().split(" ", 2); //splits the dateTime string into date and Time
                     date = parseDate(dateTimeDetails[0].trim());
-                    time = parseTime(dateTimeDetails[1], ui);
+                    time = parseTime(dateTimeDetails[1]);
                 } catch (ArrayIndexOutOfBoundsException e){
                     throw new DukeException("invalid number of arguments entered");
                 }
                 return new AddCommand('E', detailsSplit[0],date, time);
             // If it is none of the above commands, Tell the user to enter a valid command
             default:
-                throw new DukeException ("Invalid command Entered");
+                throw new DukeException ("Invalid command Entered. Enter help to see all the commands available");
         }
     }
 
@@ -112,13 +112,12 @@ public class Parser {
         return d;
     }
 
-    protected static LocalTime parseTime(String time, Ui ui)  {
+    protected static LocalTime parseTime(String time) throws DukeException  {
         LocalTime t;
         try {
             t = LocalTime.parse(time.trim());
         } catch (DateTimeParseException e){
-            t = LocalTime.parse("23:59");
-            ui.showErrorMessage("Time format entered is invalid. Please enter HH:MM. 23:59 has been added as a default time.");
+            throw new DukeException("Time format entered is invalid. please enter HH:MM in 24 hr format");
         }
         return t;
     }
@@ -145,11 +144,11 @@ public class Parser {
     }
     // Used for the determining which task to delete or mark as done
     private static Integer getInteger (String indexInput, Ui ui) {
-        Integer taskNum = -1;
+        Integer taskNum = 0;
         try {
             taskNum = Integer.parseInt(indexInput.trim());
         } catch (NumberFormatException e) {
-            ui.showErrorMessage("Number Format Exception");
+            ui.showErrorMessage("Number not entered as an integer");
         }
         return taskNum;
     }

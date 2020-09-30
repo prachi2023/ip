@@ -52,22 +52,20 @@ Adds a task with a deadline to the task list.
 
 Format: `deadline DESCRIPTION by YYYY-MM-DD HH:MM`
    * Time is entered in 24 hr format
-   * If no time entered, 23:59 is used as default. 
    
 Examples: 
    * `deadline Do homework by 2020-10-23 16:30`
-   * `deadline Submit assignment by 2020-11-6`
+   * `deadline Submit assignment by 2020-11-6 23:59`
 
 ### Adding an event: `event`
 Adds an event to the task list. 
 
 Format: `event DESCRIPTION at YYYY-MM-DD HH:MM`
    * Time is entered in 24 hr format
-   * If no time entered, 23:59 is used as default. 
    
 Examples: 
    * `event Networking session at 2020-12-26 14:30`
-   * `event Birthday Party at 2021-01-08`
+   * `event Birthday Party at 2021-01-08 23:59`
    
 ### Deleting a task: `delete`
 Deletes a task from the list
@@ -119,6 +117,8 @@ Examples:
 Shows all the tasks that are due/happening in the current day
 
 Format: `today`
+   * Will list all todo tasks 
+   * List only the deadlines and event occuring on that day 
   
 Example output: 
    * If the current day is 2020-11-06, returns `1. [D][Done] Submit assignment (by: 06 NOVEMBER 2020 11:59 PM)`

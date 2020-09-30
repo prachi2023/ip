@@ -112,8 +112,8 @@ public class Ui {
                 "delete x: deletes the task with index x\n" +
                 "\n***Adding Tasks***\n"+
                 "todo description of task: adds a todo task with a description of the task\n" +
-                "deadline description by yyyy-mm-dd HH:MM : this adds a task with a deadline. If no time is entered the default time is 23:59\n" +
-                "event description at yyyy-mm-dd HH:MM : this adds an event at a certain date. If no time is added default is 23:59\n"+
+                "deadline description by yyyy-mm-dd HH:MM : this adds a task with a deadline\n" +
+                "event description at yyyy-mm-dd HH:MM : this adds an event at a certain date.\n"+
                 "\n***Searching for a Task***\n" +
                 "find x: finds a task with x as a keyword\n" +
                 "today: lists all the tasks occuring on that given day\n"+
