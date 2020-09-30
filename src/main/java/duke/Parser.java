@@ -12,6 +12,10 @@ import java.time.format.DateTimeParseException;
  * Ensures that the user has entered the commands in the right format
  */
 public class Parser {
+    private static int taskNum = -1;
+    private static LocalTime time;
+    private static LocalDate date;
+    private static String description = "";
     /**
      * Returns a Command that can then be executed
      * The String input is minimally broken down into the first word entered which should be the command name
@@ -26,10 +30,7 @@ public class Parser {
         // Get the command word entered
         String[] userInput = input.split(" ",2);
         String command = userInput[0];
-        String[] detailsSplit;
-        int taskNum;
-        LocalTime time;
-        LocalDate date;
+
         // Find the right command class to return
         switch (command) {
             case "help":
@@ -77,7 +78,6 @@ public class Parser {
                 }
                 return new ListCommand('Y', year);
             case "todo":
-                String description;
                 try{
                     description = userInput[1];
                 } catch(ArrayIndexOutOfBoundsException e){
@@ -90,28 +90,42 @@ public class Parser {
 
             case "deadline":
                 try{
-                    detailsSplit = parseDeadline(userInput[1]); //splits the input into the description and the dateTime
-                    String[] dateTimeDetails = detailsSplit[1].trim().split(" ", 2); //splits the dateTime string into date and Time
-                    date = parseDate(dateTimeDetails[0].trim());
-                    time = parseTime(dateTimeDetails[1]);
+                    getDetails(userInput,"by" );
                 } catch (ArrayIndexOutOfBoundsException e){
                     throw new DukeException("invalid number of arguments entered");
                 }
-                return new AddCommand('D', detailsSplit[0], date, time);
+                return new AddCommand('D', description, date, time);
             case "event":
                 try {
-                    detailsSplit = parseEvent(userInput[1]);//splits the input into the description and the dateTime
-                    String[] dateTimeDetails = detailsSplit[1].trim().split(" ", 2); //splits the dateTime string into date and Time
-                    date = parseDate(dateTimeDetails[0].trim());
-                    time = parseTime(dateTimeDetails[1]);
+                    getDetails(userInput,"at" );
                 } catch (ArrayIndexOutOfBoundsException e){
                     throw new DukeException("invalid number of arguments entered");
                 }
-                return new AddCommand('E', detailsSplit[0],date, time);
+                return new AddCommand('E', description,date, time);
             // If it is none of the above commands, Tell the user to enter a valid command
             default:
                 throw new DukeException ("Invalid command entered. Enter help to see all the commands available");
         }
+    }
+
+    //split all the details of the event and deadlines
+    protected static void  getDetails(String[] input, String parser) throws DukeException {
+        String[] detailsSplit = parseDescription(input[1], parser);//splits the input into the description and the dateTime
+        description = detailsSplit[0];
+        String[] dateTimeDetails = detailsSplit[1].trim().split(" ", 2); //splits the dateTime string into date and Time
+        date = parseDate(dateTimeDetails[0].trim());
+        time = parseTime(dateTimeDetails[1]);
+    }
+
+    private static String[] parseDescription (String userInput, String parser) throws DukeException{
+        String[] taskDetails = userInput.split(parser, 2);
+        if (!userInput.contains(parser)){
+            throw new DukeException("'" + parser +"' is needed for datetime description");
+        }
+        if (taskDetails[0].equals("")){
+            throw new DukeException("No description of task added");
+        }
+        return taskDetails;
     }
 
    protected static LocalDate parseDate(String date) throws DukeException {
@@ -134,26 +148,6 @@ public class Parser {
         return t;
     }
 
-    private static String[] parseDeadline (String userInput) throws DukeException{
-        String[] taskDetails = userInput.split("by", 2);
-        if (!userInput.contains("by")){
-            throw new DukeException("No 'by' for deadline");
-        }
-        if (taskDetails[0].equals("")){
-            throw new DukeException("No description of task added");
-        }
-        return taskDetails;
-    }
-    private static String[] parseEvent (String userInput) throws DukeException{
-        String[] taskDetails = userInput.split("at", 2);
-        if (!userInput.contains("at")){
-            throw new DukeException("No 'at' for event");
-        }
-        if (taskDetails[0].equals("")){
-            throw new DukeException("No description of task added");
-        }
-        return taskDetails;
-    }
     // Used for the determining which task to delete or mark as done
     private static Integer getInteger (String indexInput, Ui ui) {
         Integer taskNum = 0;
