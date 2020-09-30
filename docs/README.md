@@ -24,9 +24,7 @@ Duke is a desktop app for managing different tasks. It is optimized to be used v
 1. Download the latest *duke.jar* from [here](https://github.com/prachi2023/ip/releases)
 1. Copy the file to the folder you want to use as the home folder for the task manager
 1. Navigate to the folder with the .jar file
-1. Enter "Java -jar *"duke.jar"* 
-1. It should look like this: 
-![Image of command line](https://github.com/prachi2023/ip/blob/master/docs/dukeCLIstart.PNG)
+1. Enter "Java -jar *"duke.jar"* to start the program
 
 ## Features 
 **Notes about command format**
