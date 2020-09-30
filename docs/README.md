@@ -23,8 +23,7 @@ Duke is a desktop app for managing different tasks. It is optimized to be used v
 1. Ensure you have Java 11 or above installed in your computer 
 1. Download the latest *duke.jar* from [here](https://github.com/prachi2023/ip/releases)
 1. Copy the file to the folder you want to use as the home folder for the task manager
-1. Use the windows button + 'r' to open up the command prompt 
-1. Enter the folder with the .jar file
+1. Navigate to the folder with the .jar file
 1. Enter "Java -jar *"duke.jar"* 
 1. It should look like this: 
 ![Image of command line](https://github.com/prachi2023/ip/blob/master/docs/dukeCLIstart.PNG)
@@ -53,7 +52,7 @@ Examples:
 ### Adding a deadline: `deadline`
 Adds a task with a deadline to the task list.
 
-Format: `deadline DESCRIPTION by yyyy-mm-dd HH:MM`
+Format: `deadline DESCRIPTION by YYYY-MM-DD HH:MM`
    * Time is entered in 24 hr format
    * If no time entered, 23:59 is used as default. 
    
@@ -64,7 +63,7 @@ Examples:
 ### Adding an event: `event`
 Adds an event to the task list. 
 
-Format: `event DESCRIPTION at yyyy-mm-dd HH:MM`
+Format: `event DESCRIPTION at YYYY-MM-DD HH:MM`
    * Time is entered in 24 hr format
    * If no time entered, 23:59 is used as default. 
    
@@ -184,8 +183,8 @@ delete | delete INDEX
 mark as done | done INDEX
 **ADD TASK**|
 todo | todo DESCRIPTION
-deadline | deadline DESCRIPTION by yyyy-mm-dd HH:MM
-event | deadline DESCRIPTION by yyyy-mm-dd HH:MM
+deadline | deadline DESCRIPTION by YYYY-MM-DD HH:MM
+event | deadline DESCRIPTION by YYYY-MM-DD HH:MM
 **SEARCH TASK**|
 keyword | find KEYWORD
 year | year [YEAR INDEX]
