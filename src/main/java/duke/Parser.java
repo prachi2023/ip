@@ -39,12 +39,24 @@ public class Parser {
             case "list":
                 return new ListCommand('N');
             case "find":
-                return new FindCommand(userInput[1]);
+                try{
+                    return new FindCommand(userInput[1]);
+                } catch(ArrayIndexOutOfBoundsException e){
+                    throw new DukeException("Keyword cannot be left blank");
+                }
             case "done":
-                taskNum = getInteger(userInput[1], ui)- 1;
+                try{
+                    taskNum = getInteger(userInput[1], ui) -1;
+                }catch(ArrayIndexOutOfBoundsException e){
+                    throw new DukeException("Index cannot be left blank");
+                }
                 return new DoneCommand(taskNum);
             case "delete":
-                taskNum = getInteger(userInput[1], ui) -1;
+                try{
+                    taskNum = getInteger(userInput[1], ui) -1;
+                }catch(ArrayIndexOutOfBoundsException e){
+                    throw new DukeException("Index cannot be left blank");
+                }
                 return new DeleteCommand(taskNum);
             case "today":
                 return new ListCommand('D');
@@ -98,7 +110,7 @@ public class Parser {
                 return new AddCommand('E', detailsSplit[0],date, time);
             // If it is none of the above commands, Tell the user to enter a valid command
             default:
-                throw new DukeException ("Invalid command Entered. Enter help to see all the commands available");
+                throw new DukeException ("Invalid command entered. Enter help to see all the commands available");
         }
     }
 
